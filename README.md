@@ -11,5 +11,5 @@ Python3 运行每个模块
 -
 result文件夹的*sequence文件是最优策略序列，其中有两行数据，第一行和第二行分别是一个事件从初始状态之后的动作序列, 状态序列,数据之间用空格分开
 -
-*optimal.npy文件是最优策略的Q矩阵，形状为：[actionSize, pSize, vSize]
+*optimal.npy文件是最优策略的Q矩阵，形状为：[actionSize, state1Size, state2Size]
 -
