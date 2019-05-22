@@ -150,11 +150,14 @@ def train():
         # 记录角度序列和动作序列的列表
         locations, total_acts = [], []
         locations.append(p)
-        while p < 0.5 and it < step_control:
+        while it < step_control:
             it += 1
             greedy_act = get_greedy_act(Q, indice_p, indice_v, epsilon)
             total_acts.append(actions[greedy_act])
             newp, newv = get_new_state(p, v, actions[greedy_act])
+            if newp > 0.5:  # 达到终止状态
+                locations.append(newp)
+                break
             indice_newp, indice_newv = get_indice(newp, newv, Nump, Numv)
             max_newQa = np.max(Q[:, indice_newp, indice_newv])
             deta = reward + gamma * max_newQa - Q[greedy_act][indice_p][indice_v]

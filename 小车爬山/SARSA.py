@@ -150,11 +150,12 @@ def train():
         lr = decay * lr
         locations, total_acts = [], []
         locations.append(p)
-        while p <= 0.5 and it < step_control:
+        while it < step_control:
             it += 1
             total_acts.append(actions[greedy_act])
             newp, newv = get_new_state(p, v, actions[greedy_act])
-            if newp > 0.5:
+            if newp > 0.5:  # 达到终止状态
+                locations.append(newp)
                 break
             indice_newp, indice_newv = get_indice(newp, newv, Nump, Numv)
             new_greedy_act = get_greedy_act(Q, indice_newp, indice_newv, epsilon)
