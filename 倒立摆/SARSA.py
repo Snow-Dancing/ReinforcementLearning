@@ -5,7 +5,7 @@
 #   相反, 需要来回摆动收集足够的能量, 然后 才能将摆杆推起并稳定在最高点
 # 本函数使用SARSA方法来解决问题
 # author: Zhang Chizhan
-# date: 2019/5/18
+# date: 2019/5/21
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -144,10 +144,14 @@ def train(Numa, Numda):
         locations, total_acts = [], []
         locations.append(a)
         error_a = np.abs((a-lowa) % (higha - lowa) + lowa)
-        while it < step_control and  (error_a > controla or np.abs(da) > controlda):
+        while it < step_control:
             it += 1
             total_acts.append(actions[greedy_act])
             newa, newda = get_new_state(a, da, actions[greedy_act])
+            error_a = np.abs((newa-lowa) % (higha - lowa) + lowa)
+            if error_a < controla and np.abs(da) < controlda:
+                locations.append(newa)
+                break
             indice_newa, indice_newda = get_indice(newa, newda, Numa, Numda)
             greedy_newact = get_greedy_act(Q, indice_newa, indice_newda, epsilon)
             reward = getR(a, da, actions[greedy_act])
@@ -156,7 +160,7 @@ def train(Numa, Numda):
             a, da, indice_a, indice_da, greedy_act = newa, newda, indice_newa, indice_newda, greedy_newact
             locations.append(a)
             total_reward += reward
-            error_a = np.abs((a-lowa) % (higha - lowa) + lowa)
+
         total_step += it
         # 若该次迭代到达终点并且误差更小，或者奖励更高，则存储
         if it < step_control:

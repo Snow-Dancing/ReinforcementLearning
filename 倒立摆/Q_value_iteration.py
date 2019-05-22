@@ -71,7 +71,7 @@ def getR(alpha, dalpha, action):
 
 # 存储结果
 def save_result(total_acts, locations, Numa, Numda):
-    path = "./results/sequence" + str(Numa) + "_" + str(Numda) + ".txt"
+    path = "./result/Q_value_it_sequence" + str(Numa) + "_" + str(Numda) + ".txt"
     with open(path, 'w', encoding='utf8') as f:
         for act in total_acts:
             f.write(str(act) + " ")
@@ -80,7 +80,7 @@ def save_result(total_acts, locations, Numa, Numda):
             f.write(str(loc) + " ")
 # 可视化结果
 def show_result(Numa=2000, Numda=2000):
-    path = "./results/sequence" + str(Numa) + "_" + str(Numda) + ".txt"
+    path = "./result/Q_value_it_sequence" + str(Numa) + "_" + str(Numda) + ".txt"
     with open(path, 'r', encoding='utf8') as f:
         lines = [line for line in f.readlines()]
     locations = lines[-1].strip().split()
@@ -168,6 +168,7 @@ def train(Numa, Numda):
         # 最多从初始状态寻找1000步,若此时仍未收敛，则退出循环
         if it > 1000:
             break
+    np.save("./result/Q_value_it_optimal.npy", Q)
     save_result(total_act, location, Numa, Numda)
     show_result(Numa, Numda)
 
